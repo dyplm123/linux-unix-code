@@ -1,7 +1,7 @@
 #include<stdarg.h>
 #include"error_functions.h"
 #include"tlpi_hdr.h"
-#include<ename.c.inc>
+#include"ename.c.inc"
 
 #ifdef __GNUC__
 __attribute__ ((__noreturn__))
@@ -61,4 +61,81 @@ errMsg(const char *format, ...)
 }
 
 void 
+errExit(const char *format,...)
+{
+	va_list argList;
+	
+	va_start(argList, format);
+	outputError(TRUE,errno, TRUE, format, argList);
+	va_end(argList);
 
+	terminate(TRUE);
+}
+
+void
+err_exit(const char *format,...)
+{
+	va_list argList;
+
+	va_start(argList, format);
+	outputError(TRUE, errno, FALSE, format, argList);
+	va_end(argList);
+
+	terminate(FALSE);
+}
+
+void 
+errExitEN(int errnum, const char *format,...)
+{
+	va_list argList;
+	
+	va_start(argList, format);
+	outputError(TRUE, errnum, TRUE, format, argList);
+	va_end(argList);
+
+	terminate(TRUE);
+}
+
+void 
+fatal(const char *format,...)
+{
+	va_list argList;
+
+	va_start(argList, format);
+	outputError(FALSE, 0, TRUE, format, argList);
+	va_end(argList);
+
+	terminate(TRUE);
+}
+
+void 
+usageErr(const char *format)
+{
+	va_list argList;
+
+	fflush(stdout);
+	
+	fprintf(stderr, "Usage: ");
+	va_start(argList, format);
+	vfprintf(stderr, format, argList);
+	va_end(argList);
+
+	fflush(stderr);
+	exit(EXIT_FAILURE);
+}
+
+void 
+cmdLineErr(const char *format,...)
+{
+ 	va_list argList;
+
+	fflush(stdout);
+
+	fprintf(stderr, "Command-line usage error: ");
+	va_start(argList, format);
+	vfprintf(stderr, format, argList);
+	va_end(argList);
+
+	fflush(stderr);
+	exit(EXIT_FAILURE);
+}
