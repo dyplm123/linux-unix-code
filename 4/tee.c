@@ -19,13 +19,15 @@ main(int argc, char *argv[])
 	if (strcmp(argv[1], "--help") == 0)
 		usageErr("%s 0 or multi file", argv[0]);
 
-	openFlags = O_CREAT | O_WRONLY | O_TRUNC;
+	openFlags = O_CREAT | O_WRONLY;
 	if (strcmp(argv[1], "-a") == 0)
 	{
 		openFlags |= O_APPEND;
 		numOutputfile --;
 		isappend = 1;
 	}
+	else
+		openFlags |= O_TRUNC;
 	
 	outputFd[0] = 1;
 	int i;
