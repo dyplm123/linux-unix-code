@@ -109,7 +109,7 @@ fatal(const char *format,...)
 }
 
 void 
-usageErr(const char *format)
+usageErr(const char *format, ...)
 {
 	va_list argList;
 
